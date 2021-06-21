@@ -18,7 +18,9 @@ namespace Todo.Domain.Handlers
         }
         public ICommandResult Handle(CreateTodoCommand command)
         {
-
+            command.Validate();
+            if (command.Invalid)
+                return new GenericCommandresult(false, "Ops, parece que sua tarefa esta errada!", command.Notifications);
         }
 
     }
