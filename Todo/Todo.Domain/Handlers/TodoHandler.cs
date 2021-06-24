@@ -10,7 +10,9 @@ namespace Todo.Domain.Handlers
     public class TodoHandler :
         Notifiable,
         IHandler<CreateTodoCommand>,
-        IHandler<UpdateTodoCommand>
+        IHandler<UpdateTodoCommand>,
+        IHandler<MarkTodoAsDoneCommand>,
+        IHandler<MarkTodoAsUndoneCommand>
     {
         private readonly ITodoRepository _repository;
 
@@ -48,6 +50,46 @@ namespace Todo.Domain.Handlers
             //Altera o titulo
             todo.UpdateTitle(command.Title);
 
+
+            //salva no banco
+            _repository.Update(todo);
+
+            //retorna o Resultado
+            return new GenericCommandresult(true, "Tarefa salva", todo);
+        }
+
+        public ICommandResult Handle(MarkTodoAsDoneCommand command)
+        {
+            // Fail fast Validation
+            command.Validate();
+            if (command.Invalid)
+                return new GenericCommandresult(false, "Ops, parece que sua tarefa esta errada!", command.Notifications);
+
+            //Recupera o TodoItem(Reindratacao)
+            var todo = _repository.GetById(command.Id, command.User);
+
+            //Altera o estado
+            todo.MarkAsDone();
+
+            //salva no banco
+            _repository.Update(todo);
+
+            //retorna o Resultado
+            return new GenericCommandresult(true, "Tarefa salva", todo);
+        }
+
+        public ICommandResult Handle(MarkTodoAsUndoneCommand command)
+        {
+            // Fail fast Validation
+            command.Validate();
+            if (command.Invalid)
+                return new GenericCommandresult(false, "Ops, parece que sua tarefa esta errada!", command.Notifications);
+
+            //Recupera o TodoItem(Reindratacao)
+            var todo = _repository.GetById(command.Id, command.User);
+
+            //Altera o estado
+            todo.MarkAsUndone();
 
             //salva no banco
             _repository.Update(todo);
