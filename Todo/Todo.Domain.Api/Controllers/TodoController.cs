@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Domain.Commands;
+using Todo.Domain.Entities;
 using Todo.Domain.Handlers;
+using Todo.Domain.Repositories;
 
 namespace Todo.Api.Controllers
 {
@@ -8,6 +11,15 @@ namespace Todo.Api.Controllers
     [Route("v1/todos")]
     public class TodoController : ControllerBase
     {
+        [Route("")]
+        [HttpGet]
+        public IEnumerable<TodoItem> GetAll(
+            [FromServices] ITodoRepository repository
+        )
+        {
+            return repository.GetAll("franciscorafael");
+        }
+
         [Route("")]
         [HttpPost]
         public GenericCommandresult Create(
