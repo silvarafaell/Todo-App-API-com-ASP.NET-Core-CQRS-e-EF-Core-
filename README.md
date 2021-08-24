@@ -1,4 +1,4 @@
 # Todo-App-API-com-ASP.NET-Core-CQRS-e-EF-Core-
-curso na plataforma Balta.IO de Todo App: API com ASP.NET Core, CQRS e EF Core
-Ferramentas utilizadas: 
-SQLSERVER
+### curso de Todo App: API com ASP.NET Core, CQRS e EF Core, na plataforma Balta.IO
+# Ferramentas utilizadas: 
+- SQLSERVER
